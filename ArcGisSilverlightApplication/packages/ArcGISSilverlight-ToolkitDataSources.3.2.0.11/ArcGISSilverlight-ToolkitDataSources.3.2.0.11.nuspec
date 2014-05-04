@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ArcGISSilverlight-ToolkitDataSources</id>
+    <version>3.2.0.11</version>
+    <title>ArcGIS API for Silverlight - Toolkit DataSources</title>
+    <authors>Esri Inc.</authors>
+    <owners>Esri Inc.</owners>
+    <licenseUrl>http://www.esri.com/legal/pdfs/mla_e204_e300/english</licenseUrl>
+    <projectUrl>http://links.esri.com/silverlight</projectUrl>
+    <iconUrl>http://serverapps102.esri.com/media/arcgis_150x150.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The ArcGIS API for Silverlight is a powerful web mapping API for Silverlight 5 applications.  The ESRI.ArcGIS.Client.Toolkit.DataSources library contains a set of standard and custom data sources to enhance the ArcGIS API for Silverlight.  The library contains support for WMS, KML, OpenStreetMap, GeoRss, CSV, and heatmap layers.  Source code for this library is available on CodePlex at http://esrisilverlight.codeplex.com and GitHub.com at http://github.com/Esri/arcgis-toolkit-sl-wpf.  For complete design-time support in Visual Studio, and localized resources, download and install the ArcGIS API for Silverlight: http://links.esri.com/silverlight</description>
+    <summary>The ArcGIS API for Silverlight is a powerful web mapping API for Silverlight 5 applications.  This package contains the  ESRI.ArcGIS.Client.Toolkit.DataSources library.</summary>
+    <releaseNotes>ArcGIS API for Silverlight library version: 10.2.1.431</releaseNotes>
+    <copyright>Copyright © 2013 Esri. All rights reserved. ArcGIS is a registered trademark of Esri.</copyright>
+    <language>en-US</language>
+    <tags>arcgis esri map mapping gis arcgis.com location toolkit wms wmts kml osm rss csv heatmap</tags>
+    <dependencies>
+      <dependency id="ArcGISSilverlight-Core" version="[3.2.0.11, 3.3)" />
+    </dependencies>
+  </metadata>
+</package>

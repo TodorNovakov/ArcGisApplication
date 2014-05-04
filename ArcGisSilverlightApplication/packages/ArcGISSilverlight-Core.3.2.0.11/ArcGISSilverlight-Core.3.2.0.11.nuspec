@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ArcGISSilverlight-Core</id>
+    <version>3.2.0.11</version>
+    <title>ArcGIS API for Silverlight - Core</title>
+    <authors>Esri Inc.</authors>
+    <owners>Esri Inc.</owners>
+    <licenseUrl>http://www.esri.com/legal/pdfs/mla_e204_e300/english</licenseUrl>
+    <projectUrl>http://links.esri.com/silverlight</projectUrl>
+    <iconUrl>http://serverapps102.esri.com/media/arcgis_150x150.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The ArcGIS API for Silverlight is a powerful web mapping API for Silverlight 5 applications.  The ESRI.ArcGIS.Client library contains core functionality of the ArcGIS API for Silverlight.  The library contains a Map control, ArcGIS service layers, graphics, geometry, symbol components, and tasks that support query, find, identify, and various geospatial and geoprocessing operations.  For complete design-time support in Visual Studio, and localized resources, download and install the ArcGIS API for Silverlight: http://links.esri.com/silverlight</description>
+    <summary>The ArcGIS API for Silverlight is a powerful web mapping API for Silverlight 5 applications.  This package contains the  ESRI.ArcGIS.Client library.</summary>
+    <releaseNotes>ArcGIS API for Silverlight library version: 10.2.1.431</releaseNotes>
+    <copyright>Copyright © 2013 Esri. All rights reserved. ArcGIS is a registered trademark of Esri.</copyright>
+    <language>en-US</language>
+    <tags>arcgis esri map mapping gis arcgis.com location</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="Silverlight5.0" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
