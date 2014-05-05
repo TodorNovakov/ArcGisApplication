@@ -41,7 +41,19 @@
                     </esri:SimpleFillSymbol>
                 </esri:SimpleRenderer.Symbol>
             </esri:SimpleRenderer>
-        </Grid.Resources>
+
+            <!-- IDENTIFY TASK RESOURCES -->
+                <esri:PictureMarkerSymbol x:Key="IdentifyLocationSymbol" OffsetX="35" OffsetY="35"
+      Source="/Assets/images/i_about.png" />
+                <esri:SimpleFillSymbol x:Key="SelectedFeatureSymbol" Fill="#64FF0000" BorderBrush="Red" 
+      BorderThickness="2" />
+            
+            <!-- Find Task Resources-->
+            <esri:SimpleMarkerSymbol x:Key="DefaultMarkerSymbol" Size="8" Color="Red" Style="Circle" />
+            <esri:SimpleLineSymbol x:Key="DefaultLineSymbol" Color="Red" Width="6"  />
+            <esri:SimpleFillSymbol x:Key="DefaultFillSymbol" BorderBrush="Red" BorderThickness="2" Fill="#50FF0000"/>
+
+            </Grid.Resources>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -49,15 +61,19 @@
             <RowDefinition Height="150" />
         </Grid.RowDefinitions>
 
-        <esri:Map x:Name="MyMap" WrapAround="True">
+         <!-- MAP -->
+        <esri:Map x:Name="MyMap" WrapAround="True" MouseClick="MyMap_MouseClick">
             <esri:ArcGISDynamicMapServiceLayer ID="World"
                 Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer"
                 VisibleLayers="2"  />
             <esri:FeatureLayer ID="Continets" Mode="OnDemand"
-                    Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/1" />
+                    Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/1"/>
             <esri:FeatureLayer ID="Cities" Mode="OnDemand"  
                                 Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/0"
-                        OutFields="*" MouseLeftButtonDown="FeatureLayer_MouseLeftButtonDown"/>
+                               	OutFields="*" MouseLeftButtonDown="FeatureLayer_MouseLeftButtonDown" />
+            <esri:GraphicsLayer ID="ResultsGraphicsLayer" />
+            <esri:GraphicsLayer ID="IdentifyIconGraphicsLayer" />
+            <esri:GraphicsLayer ID="MyGraphicsLayer" />
 
 
         </esri:Map>
@@ -85,7 +101,7 @@
         </Border>
 
         <!--OVERVIEW MAP-->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Width="300" Height="200" Canvas.ZIndex="100" >
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="200" Height="120" Canvas.ZIndex="80" >
             <Border CornerRadius="0,0,0,10" Background="#BB919191">
                 <esri:OverviewMap x:Name="MyOverviewMap" 
                                   Margin="8,0,0,8" 
@@ -108,15 +124,15 @@
         <esri:ScaleLine Map="{Binding ElementName=MyMap}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 
         <!--MAGNIFIER-->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" >
-            <Rectangle Fill="#77919191" Stroke="Gray"  RadiusX="10" RadiusY="10" Margin="0,0,0,5" >
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,0" Width="70" Height="70" >
+            <Rectangle Fill="#77919191" Stroke="Gray"  RadiusX="3" RadiusY="3" Margin="0,0,0,5" >
                 <Rectangle.Effect>
                     <DropShadowEffect/>
                 </Rectangle.Effect>
             </Rectangle>
-            <Rectangle Fill="#66FFFFFF" Stroke="DarkGray" RadiusX="5" RadiusY="5" Margin="10,10,10,15" />
+            <Rectangle Fill="#66FFFFFF" Stroke="DarkGray" RadiusX="2" RadiusY="2" Margin="10,10,10,15" />
             <Image x:Name="MyMagnifyImage" Source="Images/magnifier.png"  Canvas.ZIndex="10" Margin="25, 20, 20, 25"
-                   Stretch="Fill" Width="32" Height="50"   
+                   Stretch="UniformToFill" Width="32" Height="50"   
                    MouseLeftButtonDown="MyMagnifyImage_MouseLeftButtonDown" />
         </Grid>
         <esri:Magnifier x:Name="MyMagnifier" Visibility="Visible" ZoomFactor="3"
@@ -133,75 +149,63 @@
         <esri:FeatureDataGrid Grid.Row="2" x:Name="MyDataGrid"
 				Map="{Binding ElementName=MyMap}"
 				GraphicsLayer="{Binding ElementName=MyMap, Path=Layers.[Cities]}" />
-        <!--Query Task-->
-        <!--<Canvas x:Name="ResultsDisplayCanvas" HorizontalAlignment="Left" VerticalAlignment="Top"  MouseMove="Canvas_MouseMove"
-                MouseLeftButtonUp="Canvas_MouseLeftButtonUp" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" Width="547" Height="200" Margin="0,30,0,0" >
-            <Rectangle Stroke="Gray"  RadiusX="10" RadiusY="10" Fill="#77919191" Canvas.Left="0" Canvas.Top="0" Width="547" Height="200" >
-                <Rectangle.Effect>
-                    <DropShadowEffect/>
-                </Rectangle.Effect>
-            </Rectangle>
-            <Rectangle Fill="#FFFFFFFF" Stroke="DarkGray" RadiusX="5" RadiusY="5" Canvas.Left="10" Canvas.Top="20" Width="530" Height="170"  />
-            <TextBlock x:Name="DataDisplayTitle" Text="Using Query tasks" Foreground="White" FontSize="9" Canvas.Left="10" Canvas.Top="4" FontWeight="Bold" />
-            <StackPanel Orientation="Horizontal" Margin="5,0,15,0" Canvas.Top="25" >
-                <TextBlock Text="City:" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                <TextBox x:Name="StateNameTextBox" Text="Search City" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextWrapping="NoWrap" 
-                     Margin="10,0,10,0" FontSize="12" Background="White" AcceptsReturn="False" />
-                <Button Content="Do Query" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Click="QueryButton_Click" Margin="0,0,10,0" Cursor="Hand" />
-            </StackPanel>
-
-            <slData:DataGrid x:Name="QueryDetailsDataGrid" AutoGenerateColumns="False" HeadersVisibility="Column" Background="White"
-                             IsReadOnly="True" Canvas.Left="10" Canvas.Top="50" Height="140" Width="530"
-                             HorizontalScrollBarVisibility="Hidden">
-                <slData:DataGrid.Columns>
-                    <slData:DataGridTextColumn Width="110" Binding="{Binding Attributes[CITY_NAME]}" Header="City Name"/>
-                    <slData:DataGridTextColumn Width="110" Binding="{Binding  Attributes[CNTRY_NAME ] }" Header="Country"/>
-                    <slData:DataGridTextColumn Width="*" Binding="{Binding  Attributes[STATUS] }" Header="Status"/>
-                </slData:DataGrid.Columns>
-            </slData:DataGrid>
-        </Canvas>-->
         
-            <!--Identify Task-->
-        <!--<Border x:Name="IdentifyBorder" Background="#77919191" BorderThickness="1" CornerRadius="5"
-                HorizontalAlignment="Right" BorderBrush="Gray" VerticalAlignment="Top" 
-                Margin="5">
-            <Border.Effect>
+        <!--Query Task-->
+        <Canvas x:Name="ResultsDisplayCanvas" HorizontalAlignment="Right" VerticalAlignment="Center" Width="330" Height="235" Margin="0,30,0,0">
+        <Rectangle Stroke="Gray"  RadiusX="10" RadiusY="10" Fill="#77919191" Canvas.Left="0" Canvas.Top="0" Width="330" Height="160" >
+            <Rectangle.Effect>
                 <DropShadowEffect/>
-            </Border.Effect>
-            <Grid x:Name="IdentifyGrid" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock x:Name="DataDisplayTitleBottom" Text="Click in the United States to identify features" 
-                       Foreground="White" FontSize="10" Grid.Row="0"                      
-                       Margin="15,5,15,1" HorizontalAlignment="Center" >
-                    <TextBlock.Effect>
-                        <DropShadowEffect />
-                    </TextBlock.Effect>
-                </TextBlock>
-                <Grid x:Name="IdentifyResultsPanel" Margin="5,1,5,5" HorizontalAlignment="Center" 
-                            VerticalAlignment="Top" Visibility="Collapsed" Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <ComboBox x:Name="IdentifyComboBox" SelectionChanged="cb_SelectionChanged"
-                         Margin="5,1,5,5" Grid.Row="0">
-                    </ComboBox>
-                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto"  
-                         Width="230" MinHeight="200" Grid.Row="1">
-                        <slData:DataGrid x:Name="IdentifyDetailsDataGrid" AutoGenerateColumns="False" HeadersVisibility="None" 
-                              Background="White">
+            </Rectangle.Effect>
+        </Rectangle>
+        <Rectangle Fill="#FFFFFFFF" Stroke="DarkGray" RadiusX="5" RadiusY="5" Canvas.Left="10" Canvas.Top="20" Width="310" Height="130"  />
+        <TextBlock x:Name="DataDisplayTitle" Text="Query Task City" Foreground="White" FontSize="9" Canvas.Left="10" Canvas.Top="4" FontWeight="Bold" />
+            <StackPanel Orientation="Horizontal" Margin="5,0,15,0" Canvas.Top="25">
+                <TextBlock Text="City:" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBox x:Name="StateNameTextBox" Text="New" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextWrapping="NoWrap" 
+                     Margin="10,0,10,0" FontSize="12" Background="White" AcceptsReturn="False" />
+            <Button Content="Do Query" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Click="QueryButton_Click" Margin="0,0,10,0" Cursor="Hand" />
+        </StackPanel>
+
+        <slData:DataGrid x:Name="QueryDetailsDataGrid" AutoGenerateColumns="False" HeadersVisibility="Column" Background="White"
+                             IsReadOnly="True" Canvas.Left="10" Canvas.Top="50" Height="95" Width="300"
+                             HorizontalScrollBarVisibility="Hidden">
+            <slData:DataGrid.Columns>
+                    <slData:DataGridTextColumn Width="85" Binding="{Binding Attributes[CITY_NAME]}" Header="City Name"/>
+                    <slData:DataGridTextColumn Width="70" Binding="{Binding  Attributes[CNTRY_NAME] }" Header="Country"/>
+                    <slData:DataGridTextColumn Width="*" Binding="{Binding  Attributes[STATUS] }" Header="City Status"/>
+                </slData:DataGrid.Columns>
+        </slData:DataGrid>
+        </Canvas>
+
+        <!-- IDENTIFY TASK INTERFACE -->
+        <StackPanel Margin="10" HorizontalAlignment="Left">
+            <Grid>
+                <Rectangle Fill="#CC5C90B2" Stroke="Gray"  RadiusX="10" RadiusY="10" />
+                <StackPanel x:Name="IdentifyResultsStackPanel" Margin="15,30,15,10" Visibility="Collapsed">
+                    <TextBlock Text="Select a result from the list to display it" Foreground="White" 
+          FontSize="10" Margin="0,0,0,5" />
+                    <ComboBox x:Name="IdentifyComboBox" SelectionChanged="IdentifyComboBox_SelectionChanged" />
+                    <ScrollViewer MaxHeight="340" Margin="0,10,0,0">
+                        <slData:DataGrid x:Name="IdentifyDetailsDataGrid" AutoGenerateColumns="False"
+            HeadersVisibility="None" >
                             <slData:DataGrid.Columns>
                                 <slData:DataGridTextColumn Binding="{Binding Path=Key}" FontWeight="Bold"/>
                                 <slData:DataGridTextColumn Binding="{Binding Path=Value}"/>
                             </slData:DataGrid.Columns>
                         </slData:DataGrid>
                     </ScrollViewer>
-                </Grid>
+                </StackPanel>
             </Grid>
-        </Border>-->
+        </StackPanel>
+
+        <!-- FIND TASK INTERFACE -->
+        <!--<Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,7,0" Width="230" >
+            <Rectangle Fill="#CC5C90B2" Stroke="Gray"  RadiusX="10" RadiusY="10" Width="210" Height="55" />
+            <TextBlock Text="Find counties with names containing:" Foreground="White" FontSize="10" Margin="10,5,0,0" />
+            <TextBox x:Name="FindTextBox" Width="150" Margin="15,22,0,0" Text="Wash" />
+            <Button x:Name="FindButton" Content="Find" Margin="168,23,0,0" Click="FindButton_Click" />
+        </Canvas>-->
+
 
     </Grid>
 </UserControl>
