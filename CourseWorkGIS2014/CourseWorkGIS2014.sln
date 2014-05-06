@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseWorkGIS2014", "CourseWorkGIS2014\CourseWorkGIS2014.csproj", "{641E7F3B-3EC7-47C8-9F6A-EFC9028A612B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseWorkGIS2014.Web", "CourseWorkGIS2014.Web\CourseWorkGIS2014.Web.csproj", "{4DF551FC-DA62-4111-A942-AD77D7519B55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{641E7F3B-3EC7-47C8-9F6A-EFC9028A612B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{641E7F3B-3EC7-47C8-9F6A-EFC9028A612B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{641E7F3B-3EC7-47C8-9F6A-EFC9028A612B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{641E7F3B-3EC7-47C8-9F6A-EFC9028A612B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF551FC-DA62-4111-A942-AD77D7519B55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF551FC-DA62-4111-A942-AD77D7519B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF551FC-DA62-4111-A942-AD77D7519B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF551FC-DA62-4111-A942-AD77D7519B55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

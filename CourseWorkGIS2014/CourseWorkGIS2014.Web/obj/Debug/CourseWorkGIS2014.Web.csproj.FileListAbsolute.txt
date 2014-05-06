@@ -1,0 +1,6 @@
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\bin\CourseWorkGIS2014.Web.dll.config
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\bin\CourseWorkGIS2014.Web.dll
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\bin\CourseWorkGIS2014.Web.pdb
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\obj\Debug\CourseWorkGIS2014.Web.csprojResolveAssemblyReference.cache
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\obj\Debug\CourseWorkGIS2014.Web.dll
+c:\users\toshkata\documents\visual studio 2013\Projects\CourseWorkGIS2014\CourseWorkGIS2014.Web\obj\Debug\CourseWorkGIS2014.Web.pdb

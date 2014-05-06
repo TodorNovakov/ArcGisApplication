@@ -1,6 +1,0 @@
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\bin\ArcGisSilverlightApplication.Web.dll.config
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\bin\ArcGisSilverlightApplication.Web.dll
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\bin\ArcGisSilverlightApplication.Web.pdb
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\obj\Debug\ArcGisSilverlightApplication.Web.csprojResolveAssemblyReference.cache
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\obj\Debug\ArcGisSilverlightApplication.Web.dll
-c:\users\toshkata\documents\visual studio 2013\Projects\ArcGisSilverlightApplication\ArcGisSilverlightApplication.Web\obj\Debug\ArcGisSilverlightApplication.Web.pdb

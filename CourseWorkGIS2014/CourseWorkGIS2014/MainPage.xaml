@@ -1,0 +1,240 @@
+﻿<UserControl x:Class="CourseWorkGIS2014.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:basics="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    xmlns:slData="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+    xmlns:esri="http://schemas.esri.com/arcgis/client/2009">
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <!--Feature DataGrid "Selected/Unselected elements"-->
+        <Grid.Resources>
+            <esri:SimpleRenderer x:Key="SelectRenderer">
+                <esri:SimpleRenderer.Symbol>
+                    <esri:SimpleFillSymbol>
+                        <esri:SimpleFillSymbol.ControlTemplate>
+                            <ControlTemplate>
+                                <Path x:Name="Element" Fill="#330000FF" Stroke="Black" StrokeThickness="1"
+							  Cursor="Hand">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="SelectionStates">
+                                            <VisualState x:Name="Unselected" />
+                                            <VisualState x:Name="Selected">
+                                                <Storyboard>
+                                                    <ColorAnimation Storyboard.TargetName="Element"
+															Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)" 
+															To="#99FFFF00" Duration="0:0:.25" />
+                                                    <ColorAnimation Storyboard.TargetName="Element"
+															Storyboard.TargetProperty="(Path.Stroke).(SolidColorBrush.Color)" 
+															To="#9900FFFF" Duration="0:0:.25" />
+                                                    <DoubleAnimation Storyboard.TargetName="Element" 
+															 Storyboard.TargetProperty="StrokeThickness"
+															 To="3" Duration="00:00:.25" />
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Path>
+                            </ControlTemplate>
+                        </esri:SimpleFillSymbol.ControlTemplate>
+                    </esri:SimpleFillSymbol>
+                </esri:SimpleRenderer.Symbol>
+            </esri:SimpleRenderer>
+
+            <!-- IDENTIFY TASK RESOURCES -->
+            <esri:PictureMarkerSymbol x:Key="IdentifyLocationSymbol" OffsetX="35" OffsetY="35"
+      Source="/Assets/images/i_about.png" />
+            <esri:SimpleFillSymbol x:Key="SelectedFeatureSymbol" Fill="#64FF0000" BorderBrush="Red" 
+      BorderThickness="2" />
+
+            <!-- Find Task Resources-->
+            <esri:SimpleMarkerSymbol x:Key="DefaultMarkerSymbol" Size="8" Color="Red" Style="Circle" />
+            <esri:SimpleLineSymbol x:Key="DefaultLineSymbol" Color="Red" Width="6"  />
+            <esri:SimpleFillSymbol x:Key="DefaultFillSymbol" BorderBrush="Red" BorderThickness="2" Fill="#50FF0000"/>
+
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="110" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+
+        <!-- MAP -->
+        <esri:Map x:Name="MyMap" WrapAround="True" MouseClick="MyMap_MouseClick">
+            <esri:ArcGISDynamicMapServiceLayer ID="World"
+                Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer"
+                VisibleLayers="2"  />
+            <esri:FeatureLayer ID="Continets" Mode="OnDemand"
+                    Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/1"/>
+            <esri:FeatureLayer ID="Cities" Mode="OnDemand"  
+                                Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/0"
+                               	OutFields="*" MouseLeftButtonDown="FeatureLayer_MouseLeftButtonDown"  />
+            <esri:GraphicsLayer ID="ResultsGraphicsLayer" />
+            <esri:GraphicsLayer ID="IdentifyIconGraphicsLayer" />
+            <esri:GraphicsLayer ID="MyGraphicsLayer" />
+
+
+        </esri:Map>
+        <!--LAYERS VISIBILITY-->
+        <Border Background="Azure" BorderThickness="1" CornerRadius="15"
+            HorizontalAlignment="Left"  VerticalAlignment="Top"
+            Margin="20" Padding="5" BorderBrush="Blue" >
+            <ListBox x:Name="MyList" ItemsSource="{Binding ElementName=MyMap, Path=Layers}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <!--Layer visibility checkbox-->
+                            <CheckBox IsChecked="{Binding Visible, Mode=TwoWay}" />
+                            <!--Opacity slider-->
+                            <Slider Margin="-5,0,0,0" Minimum="0" Maximum="1" Width="30" 
+                                Value="{Binding Opacity, Mode=TwoWay}" Height="18" />
+                            <!--Layer name-->
+                            <TextBlock Text="{Binding ID, Mode=OneWay}" Margin="5,0,0,0" >
+
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+
+        <!--OVERVIEW MAP-->
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Width="200" Height="120" Canvas.ZIndex="80" >
+            <Border CornerRadius="0,0,0,10" Background="#BB919191">
+                <esri:OverviewMap x:Name="MyOverviewMap" 
+                                  Margin="8,0,0,8" 
+                                  MaximumExtent="-41381301,-19971868,41381301,19971868"
+                                  Map="{Binding ElementName=MyMap}">
+                    <esri:OverviewMap.Layer>
+                        <esri:ArcGISDynamicMapServiceLayer ID="World"
+                Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer"
+                VisibleLayers="0,1,2" />
+                    </esri:OverviewMap.Layer>
+                </esri:OverviewMap>
+            </Border>
+        </Grid>
+
+        <!--MAP NAVIGATION-->
+        <esri:Navigation Margin="3" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                         Map="{Binding ElementName=MyMap}"  >
+        </esri:Navigation>
+        <!--SCALE LINE-->
+        <esri:ScaleLine Map="{Binding ElementName=MyMap}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+
+        <!--MAGNIFIER-->
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,10,10,0" Width="70" Height="70" >
+            <Rectangle Fill="#77919191" Stroke="Gray"  RadiusX="3" RadiusY="3" Margin="0,0,0,5" >
+                <Rectangle.Effect>
+                    <DropShadowEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Rectangle Fill="#66FFFFFF" Stroke="DarkGray" RadiusX="2" RadiusY="2" Margin="10,10,10,15" />
+            <Image x:Name="MyMagnifyImage" Source="Images/magnifier.png"  Canvas.ZIndex="10" Margin="25, 20, 20, 25"
+                   Stretch="UniformToFill" Width="32" Height="50"   
+                   MouseLeftButtonDown="MyMagnifyImage_MouseLeftButtonDown" />
+        </Grid>
+        <esri:Magnifier x:Name="MyMagnifier" Visibility="Visible" ZoomFactor="3"
+                              Map="{Binding ElementName=MyMap}" >
+            <esri:Magnifier.Layers>
+                <esri:FeatureLayer ID="Continets"
+                Url="http://maverick.arcgis.com/ArcGIS/rest/services/World_WGS84/MapServer/1" />
+            </esri:Magnifier.Layers>
+        </esri:Magnifier>
+
+        <!--Feature DataGrid-->
+        <basics:GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
+
+        <esri:FeatureDataGrid Grid.Row="2" x:Name="MyDataGrid"
+				Map="{Binding ElementName=MyMap}"
+				GraphicsLayer="{Binding ElementName=MyMap, Path=Layers.[Cities]}" />
+
+        <!--Query Task-->
+        <Canvas x:Name="ResultsDisplayCanvas" HorizontalAlignment="Right" VerticalAlignment="Center" Width="330" Height="235" Margin="0,30,0,0">
+            <Rectangle Stroke="Gray"  RadiusX="10" RadiusY="10" Fill="#77919191" Canvas.Left="0" Canvas.Top="0" Width="330" Height="160" >
+                <Rectangle.Effect>
+                    <DropShadowEffect/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <Rectangle Fill="#FFFFFFFF" Stroke="DarkGray" RadiusX="5" RadiusY="5" Canvas.Left="10" Canvas.Top="20" Width="310" Height="130"  />
+            <TextBlock x:Name="DataDisplayTitle" Text="Query Task City" Foreground="White" FontSize="9" Canvas.Left="10" Canvas.Top="4" FontWeight="Bold" />
+            <StackPanel Orientation="Horizontal" Margin="5,0,15,0" Canvas.Top="25">
+                <TextBlock Text="City:" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <TextBox x:Name="StateNameTextBox" Text="New" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" TextWrapping="NoWrap" 
+                     Margin="10,0,10,0" FontSize="12" Background="White" AcceptsReturn="False" />
+                <Button Content="Do Query" Width="75" VerticalAlignment="Center" HorizontalAlignment="Right" Click="QueryButton_Click" Margin="0,0,10,0" Cursor="Hand" />
+            </StackPanel>
+
+            <slData:DataGrid x:Name="QueryDetailsDataGrid" AutoGenerateColumns="False" HeadersVisibility="Column" Background="White"
+                             IsReadOnly="True" Canvas.Left="10" Canvas.Top="50" Height="95" Width="300"
+                             HorizontalScrollBarVisibility="Hidden">
+                <slData:DataGrid.Columns>
+                    <slData:DataGridTextColumn Width="85" Binding="{Binding Attributes[CITY_NAME]}" Header="City Name"/>
+                    <slData:DataGridTextColumn Width="70" Binding="{Binding  Attributes[CNTRY_NAME] }" Header="Country"/>
+                    <slData:DataGridTextColumn Width="*" Binding="{Binding  Attributes[STATUS] }" Header="City Status"/>
+                </slData:DataGrid.Columns>
+            </slData:DataGrid>
+        </Canvas>
+
+        <!-- IDENTIFY TASK INTERFACE -->
+        <StackPanel Margin="10" HorizontalAlignment="Left">
+            <Grid>
+                <Rectangle Fill="#CC5C90B2" Stroke="Gray"  RadiusX="10" RadiusY="10" />
+                <StackPanel x:Name="IdentifyResultsStackPanel" Margin="15,30,15,10" Visibility="Collapsed">
+                    <TextBlock Text="Select a result from the list to display it" Foreground="White" 
+          FontSize="10" Margin="0,0,0,5" />
+                    <ComboBox x:Name="IdentifyComboBox" SelectionChanged="IdentifyComboBox_SelectionChanged" />
+                    <ScrollViewer MaxHeight="340" Margin="0,10,0,0">
+                        <slData:DataGrid x:Name="IdentifyDetailsDataGrid" AutoGenerateColumns="False"
+            HeadersVisibility="None" >
+                            <slData:DataGrid.Columns>
+                                <slData:DataGridTextColumn Binding="{Binding Path=Key}" FontWeight="Bold"/>
+                                <slData:DataGridTextColumn Binding="{Binding Path=Value}"/>
+                            </slData:DataGrid.Columns>
+                        </slData:DataGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <!-- FIND TASK INTERFACE -->
+        <Canvas HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,7,0" Width="430" >
+            <Rectangle Fill="#CC5C90B2" Stroke="Gray"  RadiusX="10" RadiusY="10" Width="210" Height="55" Canvas.Top="5" />
+            <TextBlock Text="Find continent ot city :" Foreground="White" FontSize="10" Margin="10,5,0,0" />
+            <TextBox x:Name="FindText" Width="150" Margin="15,22,0,0" Text="Wash" />
+            <Button x:Name="FindButton" Content="Find" Margin="168,23,0,0" Click="ExecuteButton_Click" />
+        </Canvas>
+
+        <!-- FIND TASK OUTPUT INTERFACE-->
+        
+        <slData:DataGrid x:Name="FindDetailsDataGrid" AutoGenerateColumns="False" HeadersVisibility="All" Background="White" 
+                         BorderBrush="Black" BorderThickness="1" SelectionChanged="FindDetails_SelectionChanged" 
+                         HorizontalScrollBarVisibility="Hidden" Grid.Row="3"
+                         IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                         Height="Auto" Width="Auto">
+            <slData:DataGrid.Columns>
+                <slData:DataGridTextColumn Binding="{Binding Path=LayerId}" Header="Layer ID" />
+                <slData:DataGridTextColumn Binding="{Binding Path=LayerName}" Header="Layer Name"/>
+                <slData:DataGridTextColumn Binding="{Binding Path=Value}" Header="Continent/City Name"/>
+            </slData:DataGrid.Columns>
+        </slData:DataGrid>
+        
+        
+        <!--Edit Feature Data Form 
+        ADD (MouseLeftButtonUp="FeatureLayer_MouseLeftButtonUp"
+                                DisableClientCaching="True" to map)  -->
+
+        <!--<Border x:Name="FeatureDataFormBorder" Visibility="Collapsed" 
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,10,10,0" Width="300" Height="300" >
+            <Border.Effect>
+                <DropShadowEffect Color="Black" Direction="-45" BlurRadius="20" Opacity=".75" />
+            </Border.Effect>
+            <esri:FeatureDataForm x:Name="MyFeatureDataForm"   
+                                         FeatureLayer="{Binding Path=Layers[0], ElementName=MyMap}" 
+                                         IsReadOnly="False" LabelPosition="Left" />
+        </Border>-->
+
+    </Grid>
+</UserControl>
